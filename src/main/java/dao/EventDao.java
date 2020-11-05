@@ -1,33 +1,36 @@
 package dao;
 
 import file.Event;
+import utils.GettingProperties;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class EventDao {
 
-    private String db = "jdbc:hsqldb:file:eventsDb";
-    private String user = "SA";
-    private String password = "";
     private Connection connection;
+    private GettingProperties prop = new GettingProperties();
 
 
     public EventDao() {
 
         try {
-            Class.forName("org.hsqldb.jdbc.JDBCDriver");
-            connection = DriverManager.getConnection(db, user, password);
+            Class.forName(prop.getProperties().getProperty("driver"));
+            connection = DriverManager.getConnection(prop.getProperties().getProperty("db"),
+                    prop.getProperties().getProperty("user"), prop.getProperties().getProperty("password"));
             dropTable(connection);
             createTable(connection);
 
-        } catch (SQLException | ClassNotFoundException e){
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public void createTable(Connection connection) throws SQLException {
 
-        final String createSql = "create table event( \n"+
+        final String createSql = "create table event( \n" +
                 " id varchar(20) not null,\n" +
                 " duration int not null, \n" +
                 " type varchar(15), \n" +
@@ -47,11 +50,11 @@ public class EventDao {
         preparedStatement.execute();
     }
 
-    public void insertData(Event event){
+    public void insertData(Event event) {
 
         final String insertSql = "insert into event(id,duration,type,host,alert) values (?,?,?,?,?)";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
 
             preparedStatement.setString(1, event.getId());
             preparedStatement.setInt(2, event.getDuration());
