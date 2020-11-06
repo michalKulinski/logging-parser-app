@@ -15,7 +15,7 @@ public class GettingProperties {
 
     public Properties getProperties() {
 
-        try (InputStream input = new FileInputStream("src/main/resources/application.properties")) {
+        try (InputStream input = new FileInputStream("./application.properties")) {
 
             prop = new Properties();
 

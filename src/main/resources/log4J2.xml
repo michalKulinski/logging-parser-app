@@ -28,6 +28,11 @@
             <AppenderRef ref="ROOT_CONSOLE"/>
             <AppenderRef ref="FILE"/>
         </Root>
+
+        <Logger name="App" level="debug" additivity="false">
+            <AppenderRef ref="ROOT_CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </Logger>
     </Loggers>
 
 </Configuration>
