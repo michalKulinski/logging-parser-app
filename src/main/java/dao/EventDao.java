@@ -1,6 +1,9 @@
 package dao;
 
 import file.Event;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import services.EventSaver;
 import utils.GettingProperties;
 
 import java.sql.Connection;
@@ -12,14 +15,17 @@ public class EventDao {
 
     private Connection connection;
     private GettingProperties prop = new GettingProperties();
+    private final Logger LOG = LogManager.getLogger(EventDao.class);
 
 
     public EventDao() {
 
         try {
+            LOG.info("Conntecting to database");
             Class.forName(prop.getProperties().getProperty("driver"));
             connection = DriverManager.getConnection(prop.getProperties().getProperty("db"),
                     prop.getProperties().getProperty("user"), prop.getProperties().getProperty("password"));
+            LOG.debug("Connection to db successfully established: " + connection);
             dropTable(connection);
             createTable(connection);
 
@@ -40,14 +46,19 @@ public class EventDao {
 
         PreparedStatement preparedStatement = connection.prepareStatement(createSql);
         preparedStatement.execute();
+
+        LOG.debug("Event table was successfully created: " + createSql);
     }
 
     public void dropTable(Connection connection) throws SQLException {
 
         final String dropSql = "DROP TABLE IF EXISTS event";
 
+        LOG.debug("Event table exist. Start dropping table");
         PreparedStatement preparedStatement = connection.prepareStatement(dropSql);
         preparedStatement.execute();
+
+        LOG.debug("Event table was successfully dropped");
     }
 
     public void insertData(Event event) {
@@ -63,8 +74,10 @@ public class EventDao {
             preparedStatement.setBoolean(5, event.isAlert());
             preparedStatement.executeUpdate();
 
+            LOG.debug("Data was successfully insert to db: " + preparedStatement);
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Cannot insert data: " + e);
         }
     }
 }

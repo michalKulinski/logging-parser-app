@@ -2,6 +2,8 @@ package services;
 
 import file.Event;
 import file.LogEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.List;
 import static java.lang.Math.abs;
 
 public class EventParser {
+
+    private static final Logger LOG = LogManager.getLogger(EventParser.class);
 
     public static List<Event> parseToEvent(List<LogEvent> logEventsList) {
 
@@ -24,6 +28,9 @@ public class EventParser {
 
                     if (!eventList.contains(event)) {
                         eventList.add(event);
+                        LOG.debug("Successfully parsed and added to EventList: "
+                                + "Id = " + event.getId() + " Duration = " + event.getDuration()
+                                + " Host = " + event.getHost() + " Type = " + event.getType());
                         break;
                     }
                 }

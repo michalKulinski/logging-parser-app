@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+<!--    Properties-->
+    <Properties>
+        <Property name="log-path">.</Property>
+    </Properties>
+
+    <Appenders>
+<!--        Console Logging-->
+        <Console name="ROOT_CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5p][%c{1}][%t][%X{repo}] %m%n" />
+        </Console>
+
+<!--        File Logging-->
+        <RollingFile name="FILE" fileName="${log-path}\logging-parser.log" filePattern="${log-path}\logging-parser-%d{yyyy-MM-dd}-(%i).log">
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5p][%c{1}][%t][%X{repo}] %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1000"/>
+        </RollingFile>
+    </Appenders>
+
+<!--    Loggers-->
+    <Loggers>
+        <Root level="info" additivity="false">
+            <AppenderRef ref="ROOT_CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

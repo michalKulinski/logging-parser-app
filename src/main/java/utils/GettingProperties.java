@@ -1,5 +1,9 @@
 package utils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import services.ReadingLogFile;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,6 +13,7 @@ import java.util.Properties;
 public class GettingProperties {
 
     private Properties prop;
+    private static final Logger LOG = LogManager.getLogger(GettingProperties.class);
 
     public Properties getProperties() {
 
@@ -18,10 +23,8 @@ public class GettingProperties {
 
             prop.load(input);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("Cannot read properties file: " + e);
         }
         return prop;
     }
