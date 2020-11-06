@@ -1,17 +1,18 @@
 package services;
 
-import file.Event;
 import dao.EventDao;
+import domain.Event;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public class EventSaver {
+public class EventSaver implements Saver {
 
-    private static final Logger LOG = LogManager.getLogger(EventSaver.class);
+    private final Logger LOG = LogManager.getLogger(EventSaver.class);
 
-    public static void saveToDb(List<Event> eventsList){
+    @Override
+    public void saveToDb(List<Event> eventsList) {
 
         EventDao eventDao = new EventDao();
 

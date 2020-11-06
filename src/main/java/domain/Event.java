@@ -1,4 +1,4 @@
-package file;
+package domain;
 
 public class Event {
 

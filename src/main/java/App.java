@@ -1,13 +1,9 @@
-import file.Event;
-import file.LogEvent;
-import javafx.application.Application;
+import domain.Event;
+import domain.LogEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import services.EventParser;
-import services.EventSaver;
-import services.ReadingLogFile;
+import services.*;
 
-import java.io.IOException;
 import java.util.List;
 
 public class App {
@@ -16,23 +12,22 @@ public class App {
 
     public static void main(String[] args) {
 
-        try {
-            LOG.info("*** Application Started ***");
+        LOG.info("*** Application Started ***");
 
-            List<LogEvent> logEventsList = ReadingLogFile.readLogEvents();
-            LOG.info("Reading file successfull");
+        Reader readingLogFile = new LogFileReader();
+        List<LogEvent> logEventsList = readingLogFile.readLogEvents();
+        LOG.info("Reading file successfull");
 
-            List<Event> eventsList = EventParser.parseToEvent(logEventsList);
-            LOG.info("Event was parsed successfull");
+        Parser eventParser = new EventParser();
+        List<Event> eventsList = eventParser.parseToEvent(logEventsList);
+        LOG.info("Event was parsed successfull");
 
-            EventSaver.saveToDb(eventsList);
-            LOG.info("Event was successfully saved to database.");
+        Saver eventSaver = new EventSaver();
+        eventSaver.saveToDb(eventsList);
+        LOG.info("Event was successfully saved to database.");
 
-            LOG.info("*** Operation successfully done!");
-            LOG.info("*** Application close!");
+        LOG.info("*** Operation successfully done!");
+        LOG.info("*** Application close!");
 
-        } catch (IOException e) {
-            LOG.error("Cannot read file: " + e);
-        }
     }
 }

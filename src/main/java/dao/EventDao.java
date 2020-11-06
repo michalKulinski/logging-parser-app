@@ -1,9 +1,8 @@
 package dao;
 
-import file.Event;
+import domain.Event;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import services.EventSaver;
 import utils.GettingProperties;
 
 import java.sql.Connection;

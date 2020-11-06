@@ -1,7 +1,7 @@
 package services;
 
-import file.Event;
-import file.LogEvent;
+import domain.Event;
+import domain.LogEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,11 +10,12 @@ import java.util.List;
 
 import static java.lang.Math.abs;
 
-public class EventParser {
+public class EventParser implements Parser {
 
-    private static final Logger LOG = LogManager.getLogger(EventParser.class);
+    private final Logger LOG = LogManager.getLogger(EventParser.class);
 
-    public static List<Event> parseToEvent(List<LogEvent> logEventsList) {
+    @Override
+    public List<Event> parseToEvent(List<LogEvent> logEventsList) {
 
         List<Event> eventList = new ArrayList<>();
 
